@@ -21,10 +21,7 @@ namespace LetsDance
             for (int i = 0; i < 100; i++)
             {
                 DanceAction danceAction = new DanceAction();
-                System.Console.WriteLine(DanceAction.danceActions.Count);
             }
-
-            Console.ReadLine();
 
             int timer =  60;
             while (timer > 0)
@@ -64,22 +61,39 @@ namespace LetsDance
         }
 
         private string CheckAction()
-        {
-            int key = Raylib.GetKeyPressed();
-            switch(key)
+        {   
+            if (Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
             {
-                case (int)KeyboardKey.KEY_LEFT:
                 return "left";
-
-                case (int)KeyboardKey.KEY_RIGHT:
+            }
+            else if (Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
+            {
                 return "right";
-
-                case (int)KeyboardKey.KEY_UP:
+            }
+            else if (Raylib.IsKeyDown(KeyboardKey.KEY_UP))
+            {
                 return "up";
-
-                case (int)KeyboardKey.KEY_DOWN:
+            }
+            else if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
+            {
                 return "down";
             }
+
+            // int key = Raylib.GetKeyPressed();
+            // switch(key)
+            // {
+            //     case (int)KeyboardKey.KEY_LEFT:
+            //     return "left";
+
+            //     case (int)KeyboardKey.KEY_RIGHT:
+            //     return "right";
+
+            //     case (int)KeyboardKey.KEY_UP:
+            //     return "up";
+
+            //     case (int)KeyboardKey.KEY_DOWN:
+            //     return "down";
+            // }
             return "";
         }
 
@@ -99,7 +113,6 @@ namespace LetsDance
                 case 4:
                 return "down";
             }
-
             return "";
         }
 
