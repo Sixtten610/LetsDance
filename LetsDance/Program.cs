@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Windows.Input;
+using Raylib_cs;
+using System.Threading;
 
 namespace LetsDance
 {
@@ -20,21 +21,30 @@ namespace LetsDance
             for (int i = 0; i < 100; i++)
             {
                 DanceAction danceAction = new DanceAction();
+                System.Console.WriteLine(DanceAction.danceActions.Count);
             }
 
-            int timer = 6 * 600;
+            Console.ReadLine();
+
+            int timer =  60;
             while (timer > 0)
             {
-                DanceAction queuedAction =  DanceAction.danceActions.Peek();    
+                Thread.Sleep(1000);
+                
+                DanceAction queuedAction = DanceAction.danceActions.Peek();    
 
-                System.Console.WriteLine(queuedAction.Action);
+                System.Console.WriteLine("PRESS " + queuedAction.Action);
+                System.Console.WriteLine("time left: " + timer);
 
-
-
-
+                if (queuedAction.CheckActionTrue())
+                {
+                    DanceAction.danceActions.Dequeue();
+                }
 
                 timer--;
             }
+
+            Console.ReadLine();
             
         }
     }
@@ -50,20 +60,27 @@ namespace LetsDance
         {
             action = RandAction();
 
-            danceActions.ToArray();
+            danceActions.Enqueue(this);
         }
 
-        private void CheckAction()
+        private string CheckAction()
         {
-            switch()
-        }
-
-        public string Action
-        {
-            get
+            int key = Raylib.GetKeyPressed();
+            switch(key)
             {
-                return action;
+                case (int)KeyboardKey.KEY_LEFT:
+                return "left";
+
+                case (int)KeyboardKey.KEY_RIGHT:
+                return "right";
+
+                case (int)KeyboardKey.KEY_UP:
+                return "up";
+
+                case (int)KeyboardKey.KEY_DOWN:
+                return "down";
             }
+            return "";
         }
 
         private string RandAction()
@@ -84,6 +101,23 @@ namespace LetsDance
             }
 
             return "";
+        }
+
+        public bool CheckActionTrue()
+        {
+            if (CheckAction() == action)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public string Action
+        {
+            get
+            {
+                return action;
+            }
         }
 
 
