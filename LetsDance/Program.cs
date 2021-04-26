@@ -7,6 +7,7 @@ namespace LetsDance
 {
     class Program
     {
+
         static void Main(string[] args)
         {
             System.Console.WriteLine("Welcome to Let´s Dance!");
@@ -18,114 +19,64 @@ namespace LetsDance
 
             Console.ReadLine();
 
+            string[] word = {"left", "right", "up", "down"};
+
             for (int i = 0; i < 100; i++)
             {
                 DanceAction danceAction = new DanceAction();
             }
 
-            int timer =  60;
-            while (timer > 0)
+            DanceAction queuedAction = DanceAction.danceActions.Dequeue();
+
+            while (DanceAction.danceActions.Count > 0)
             {
-                Thread.Sleep(1000);
-                
-                DanceAction queuedAction = DanceAction.danceActions.Peek();    
+                Console.WriteLine("PRESS " + word[queuedAction.Action]);
 
-                System.Console.WriteLine("PRESS " + queuedAction.Action);
-                System.Console.WriteLine("time left: " + timer);
-
-                if (queuedAction.CheckActionTrue())
+                if (queuedAction.Action == Key())
                 {
                     DanceAction.danceActions.Dequeue();
                 }
-
-                timer--;
             }
 
             Console.ReadLine();
-            
+
+            int Key()
+            {
+                int k = Raylib.GetKeyPressed();
+                switch(k)
+                {
+                    case (int)KeyboardKey.KEY_LEFT:
+                    return 1;
+
+                    case (int)KeyboardKey.KEY_RIGHT:
+                    return 2;
+
+                    case (int)KeyboardKey.KEY_UP:
+                    return 3;
+
+                    case (int)KeyboardKey.KEY_DOWN:
+                    return 4;
+                }
+
+                return 10;
+            }
         }
+            
     }
+        
 
     class DanceAction
     {
         static public Queue<DanceAction> danceActions = new Queue<DanceAction>();
-        string action;
         static Random generator = new Random();
-        int word = generator.Next(1,4);
+        int action = generator.Next(1,4);
 
         public DanceAction()
         {
-            action = RandAction();
-
             danceActions.Enqueue(this);
         }
 
-        private string CheckAction()
-        {   
-            if (Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
-            {
-                return "left";
-            }
-            else if (Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
-            {
-                return "right";
-            }
-            else if (Raylib.IsKeyDown(KeyboardKey.KEY_UP))
-            {
-                return "up";
-            }
-            else if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
-            {
-                return "down";
-            }
-
-            // int key = Raylib.GetKeyPressed();
-            // switch(key)
-            // {
-            //     case (int)KeyboardKey.KEY_LEFT:
-            //     return "left";
-
-            //     case (int)KeyboardKey.KEY_RIGHT:
-            //     return "right";
-
-            //     case (int)KeyboardKey.KEY_UP:
-            //     return "up";
-
-            //     case (int)KeyboardKey.KEY_DOWN:
-            //     return "down";
-            // }
-            return "";
-        }
-
-        private string RandAction()
-        {
-            switch (word)
-            {
-                case 1:
-                return "left";
-                
-                case 2:
-                return "right";
-
-                case 3:
-                return "up";
-
-                case 4:
-                return "down";
-            }
-            return "";
-        }
-
-        public bool CheckActionTrue()
-        {
-            if (CheckAction() == action)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public string Action
+        public int Action
         {
             get
             {
