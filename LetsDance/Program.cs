@@ -1,6 +1,7 @@
 ﻿using System.Security.Cryptography;
 using System;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace LetsDance
 {
@@ -20,23 +21,45 @@ namespace LetsDance
 
             string[] word = {"left", "right", "up", "down"};
 
-            for (int i = 0; i < 100; i++)
+            for (int i = 0; i < 30; i++)
             {
                 DanceAction danceAction = new DanceAction();
             }
+
+            int points = 0;
+            int time = 90 * 100;
 
             DanceAction queuedAction = DanceAction.danceActions.Dequeue();
 
             while (DanceAction.danceActions.Count > 0)
             {
+                Thread.Sleep(10);
+                time --;
+
                 Console.WriteLine("PRESS " + queuedAction.DanceKey);
+
+                ConsoleKey key = Console.ReadKey().Key;
                 
-                if (queuedAction.DanceKey == Console.ReadKey().Key)
+                if (queuedAction.DanceKey == key)
                 {
                     Console.Clear();
-                    DanceAction.danceActions.Dequeue();
+                    queuedAction = DanceAction.danceActions.Dequeue();
+                    points += 2;
                 }
+                else if (key != queuedAction.DanceKey && points > 0)
+                {
+                    points--;
+                }
+
             }
+            if (time < 0)
+            {
+                time = 0;
+            }
+
+            System.Console.WriteLine("TOTAL POINTS; " + time * points);
+            System.Console.WriteLine("TIME; " + time);
+            System.Console.WriteLine("POINTS; " + time);
 
             Console.ReadLine();
         }
