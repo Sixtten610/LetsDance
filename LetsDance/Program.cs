@@ -1,7 +1,6 @@
-﻿using System;
+﻿using System.Security.Cryptography;
+using System;
 using System.Collections.Generic;
-using Raylib_cs;
-using System.Threading;
 
 namespace LetsDance
 {
@@ -30,54 +29,16 @@ namespace LetsDance
 
             while (DanceAction.danceActions.Count > 0)
             {
-
-                Console.WriteLine("PRESS " + word[queuedAction.Action]);
+                Console.WriteLine("PRESS " + queuedAction.DanceKey);
                 
-                if (queuedAction.Action == Key())
+                if (queuedAction.DanceKey == Console.ReadKey().Key)
                 {
+                    Console.Clear();
                     DanceAction.danceActions.Dequeue();
                 }
             }
 
             Console.ReadLine();
-
-            int Key()
-            {
-                // int k = Raylib.GetKeyPressed();
-                // switch(k)
-                // {
-                //     case (int)KeyboardKey.KEY_LEFT:
-                //     return 1;
-
-                //     case (int)KeyboardKey.KEY_RIGHT:
-                //     return 2;
-
-                //     case (int)KeyboardKey.KEY_UP:
-                //     return 3;
-
-                //     case (int)KeyboardKey.KEY_DOWN:
-                //     return 4;
-                // }
-
-                if (Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
-                {
-                    return 1;
-                }
-                else if (Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
-                {
-                    return 2;
-                }
-                else if (Raylib.IsKeyDown(KeyboardKey.KEY_UP))
-                {
-                    return 3;
-                }
-                else if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
-                {
-                    return 4;
-                }
-
-                return 10;
-            }
         }
             
     }
@@ -88,19 +49,39 @@ namespace LetsDance
         static public Queue<DanceAction> danceActions = new Queue<DanceAction>();
         static Random generator = new Random();
         int action;
+        private ConsoleKey c;
 
         public DanceAction()
         {
             action = generator.Next(1,5);
+            
+            switch(action)
+            {
+                case 1:
+                c = ConsoleKey.LeftArrow;
+                break;
+
+                case 2:
+                c = ConsoleKey.RightArrow;
+                break;
+
+                case 3:
+                c = ConsoleKey.UpArrow;
+                break;
+
+                case 4:
+                c = ConsoleKey.DownArrow;
+                break;
+            }
 
             danceActions.Enqueue(this);
         }
 
-        public int Action
+        public ConsoleKey DanceKey
         {
             get
             {
-                return action;
+                return c;
             }
         }
 
