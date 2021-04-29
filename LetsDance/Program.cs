@@ -30,8 +30,9 @@ namespace LetsDance
 
             while (DanceAction.danceActions.Count > 0)
             {
-                Console.WriteLine("PRESS " + word[queuedAction.Action]);
 
+                Console.WriteLine("PRESS " + word[queuedAction.Action]);
+                
                 if (queuedAction.Action == Key())
                 {
                     DanceAction.danceActions.Dequeue();
@@ -42,19 +43,36 @@ namespace LetsDance
 
             int Key()
             {
-                int k = Raylib.GetKeyPressed();
-                switch(k)
+                // int k = Raylib.GetKeyPressed();
+                // switch(k)
+                // {
+                //     case (int)KeyboardKey.KEY_LEFT:
+                //     return 1;
+
+                //     case (int)KeyboardKey.KEY_RIGHT:
+                //     return 2;
+
+                //     case (int)KeyboardKey.KEY_UP:
+                //     return 3;
+
+                //     case (int)KeyboardKey.KEY_DOWN:
+                //     return 4;
+                // }
+
+                if (Raylib.IsKeyDown(KeyboardKey.KEY_LEFT))
                 {
-                    case (int)KeyboardKey.KEY_LEFT:
                     return 1;
-
-                    case (int)KeyboardKey.KEY_RIGHT:
+                }
+                else if (Raylib.IsKeyDown(KeyboardKey.KEY_RIGHT))
+                {
                     return 2;
-
-                    case (int)KeyboardKey.KEY_UP:
+                }
+                else if (Raylib.IsKeyDown(KeyboardKey.KEY_UP))
+                {
                     return 3;
-
-                    case (int)KeyboardKey.KEY_DOWN:
+                }
+                else if (Raylib.IsKeyDown(KeyboardKey.KEY_DOWN))
+                {
                     return 4;
                 }
 
@@ -69,10 +87,12 @@ namespace LetsDance
     {
         static public Queue<DanceAction> danceActions = new Queue<DanceAction>();
         static Random generator = new Random();
-        int action = generator.Next(1,4);
+        int action;
 
         public DanceAction()
         {
+            action = generator.Next(1,5);
+
             danceActions.Enqueue(this);
         }
 
