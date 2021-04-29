@@ -29,30 +29,31 @@ namespace LetsDance
 
             int points = 0;
             int time = 60 * 100;
-
+            // queuar första i queuelistan
             DanceAction queuedAction = DanceAction.danceActions.Dequeue();
-
+            // meddans listan har instancer av danceAction.
             while (DanceAction.danceActions.Count > 0)
             {
                 Thread.Sleep(10);
                 time --;
-
+                // skriv ut infor
                 Console.WriteLine("PRESS " + queuedAction.DanceKey);
 
                 ConsoleKey key = Console.ReadKey().Key;
-                
+                // om knapp neddtryckt är lika med knapp för danceaction dequeuea
                 if (queuedAction.DanceKey == key)
                 {
                     Console.Clear();
                     queuedAction = DanceAction.danceActions.Dequeue();
                     points += 5;
                 }
+                // om fel knapp neddtryckt; minus poäng
                 else if (key != queuedAction.DanceKey && points > 0)
                 {
                     points -= 2;
-                }
-
-                if (time == 0)
+                }   
+                // om tid = 0 innan klar avsluta loop
+                if (time == 0) 
                 {
                     time = 0;
                     break;
@@ -64,10 +65,12 @@ namespace LetsDance
                 time = 0;
             }
 
+            // printa slut-info
             System.Console.WriteLine("TOTAL POINTS; " + time * points);
             System.Console.WriteLine("TIME; " + time);
             System.Console.WriteLine("POINTS; " + points);
 
+            // vänta på readline innan avslutar
             Console.ReadLine();
         }
             
@@ -76,11 +79,13 @@ namespace LetsDance
 
     class DanceAction
     {
+        // statisk lista med syfte att lagra alla instancer av DanceAtion
         static public Queue<DanceAction> danceActions = new Queue<DanceAction>();
         static Random generator = new Random();
         int action;
         private ConsoleKey c;
 
+        // konstruktor DanceAction slumpar en ConsoleKey och sedan lägger till instansen i listan
         public DanceAction()
         {
             action = generator.Next(1,5);
@@ -106,7 +111,7 @@ namespace LetsDance
 
             danceActions.Enqueue(this);
         }
-
+        // propertien returnerar key
         public ConsoleKey DanceKey
         {
             get
