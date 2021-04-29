@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using System.Globalization;
+using System.Security.Cryptography;
 using System;
 using System.Collections.Generic;
 using System.Threading;
@@ -27,7 +28,7 @@ namespace LetsDance
             }
 
             int points = 0;
-            int time = 90 * 100;
+            int time = 60 * 100;
 
             DanceAction queuedAction = DanceAction.danceActions.Dequeue();
 
@@ -44,11 +45,17 @@ namespace LetsDance
                 {
                     Console.Clear();
                     queuedAction = DanceAction.danceActions.Dequeue();
-                    points += 2;
+                    points += 5;
                 }
                 else if (key != queuedAction.DanceKey && points > 0)
                 {
-                    points--;
+                    points -= 2;
+                }
+
+                if (time == 0)
+                {
+                    time = 0;
+                    break;
                 }
 
             }
@@ -59,7 +66,7 @@ namespace LetsDance
 
             System.Console.WriteLine("TOTAL POINTS; " + time * points);
             System.Console.WriteLine("TIME; " + time);
-            System.Console.WriteLine("POINTS; " + time);
+            System.Console.WriteLine("POINTS; " + points);
 
             Console.ReadLine();
         }
